@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 import com.bjhy.inline.office.domain.Office;
 import com.bjhy.inline.office.excel.ExcelToHtml;
+import com.bjhy.inline.office.image.ImageToHtml;
 import com.bjhy.inline.office.pdf.HtmlToPdf;
 import com.bjhy.inline.office.pdf.PdfToHtml;
 import com.bjhy.inline.office.pdf.ShowPdf;
@@ -81,6 +82,11 @@ public class FileConvert {
 			
 		}else if("xls".equalsIgnoreCase(suffix) || "xlsx".equalsIgnoreCase(suffix)){
 			convertExcel(office);//转换office.后缀为xls与xlsx的
+			
+		}else if("png".equalsIgnoreCase(suffix) || "jpg".equalsIgnoreCase(suffix)
+				|| "bmp".equalsIgnoreCase(suffix) || "jpeg".equalsIgnoreCase(suffix)
+				|| "gif".equalsIgnoreCase(suffix)){
+			convertImage(office);//转换office.后缀为 图片后缀的 (png,jpg,bmp,jpeg,gif)
 			
 		}else if("ppt".equalsIgnoreCase(suffix) || "pptx".equalsIgnoreCase(suffix)){
 			convertPpt(office);//转换office.后缀为ppt的
@@ -194,6 +200,28 @@ public class FileConvert {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
+	
+	
+	
+	/**
+	 * 转换office.后缀为 图片后缀的 (png,jpg,bmp,jpeg,gif)
+	 * @param office
+	 */
+	private void convertImage(Office office){
+		try {
+			ImageToHtml image2Html = new ImageToHtml();
+			
+			officeStorePath.setFileStream(fileInputSteam);
+			office.setHtmlContext(image2Html.imageToHtml(officeStorePath));
+			office.setOfficeStorePath(officeStorePath);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+	
+	
+//	ImageToHtml
 	
 	/**
 	 * 转换office.后缀为pdf的

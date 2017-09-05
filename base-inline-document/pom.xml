@@ -9,5 +9,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>base-inline-office</module>
+  	<module>base-inline-test</module>
   </modules>
 </project>

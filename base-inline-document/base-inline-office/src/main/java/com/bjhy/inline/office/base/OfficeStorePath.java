@@ -239,6 +239,8 @@ public class OfficeStorePath {
 		defaultSource.add("tx.txt");
 		defaultSource.add("xl1.xlsx");
 		defaultSource.add("xl3.xlsx");
+		defaultSource.add("image1.jpg");
+		defaultSource.add("image2.png");
 		return defaultSource;
 	}
 	
@@ -299,7 +301,7 @@ public class OfficeStorePath {
 				e.printStackTrace();
 			}
 		}
-		buffer = bos.toByteArray();
+		buffer = bos.toByteArray(); 
 		return buffer;
 	}
 	
