@@ -1,8 +1,13 @@
 package com.bjhy.inline.office.text;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import org.apache.commons.io.IOUtils;
 
 import com.bjhy.inline.office.base.OfficeStorePath;
 
@@ -30,36 +35,15 @@ public class TextToHtml {
 	 * 读取html的内容
 	 */
 	private String readFileContext(OfficeStorePath storePath){
+		
+		InputStream fileStream = storePath.getFileStream();
+		
+		BufferedInputStream bis = new BufferedInputStream(fileStream);
+		String coder = OfficeStorePath.codeString(bis); 
 		//html的文本内容
-		StringBuffer htmlContext = new StringBuffer();
-		BufferedReader fileReader = null;
-		try {
-			InputStreamReader inputStreamReader = new InputStreamReader(storePath.getFileStream(),"UTF-8");
-			fileReader = new BufferedReader(inputStreamReader);
-			String buf = null;
-			buf = fileReader.readLine();
-			while(buf != null){
-				
-				//特殊字符转义
-				buf = buf.replace("\"", "&quot;");
-				buf = buf.replace("&", "&amp;");
-				buf = buf.replace("<", "&lt;");
-				buf = buf.replace(">", "&gt;");
-				
-				htmlContext.append(buf+"<br>");
-				buf = fileReader.readLine();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally{
-			if(fileReader != null){
-				try {
-					fileReader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return htmlContext.toString();
+		StringBuffer htmlContext = OfficeStorePath.getText(bis, coder);
+		String buf = htmlContext.toString();
+			
+		return buf;
 	}
 }

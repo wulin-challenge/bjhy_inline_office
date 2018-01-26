@@ -1,16 +1,18 @@
 package com.bjhy.inline.office.base;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.w3c.tidy.Configuration;
 import org.w3c.tidy.Tidy;
 
@@ -242,6 +245,71 @@ public class OfficeStorePath {
 		defaultSource.add("image1.jpg");
 		defaultSource.add("image2.png");
 		return defaultSource;
+	}
+	
+	/**
+	 * 判断文件的编码格式
+	 * @param bis
+	 * @return
+	 */
+	public static String codeString(BufferedInputStream bis){
+		String code = "UTF-8";
+			try {
+				bis.mark(2);
+				int p = (bis.read() << 8) + bis.read();
+				bis.reset();
+				switch (p) {
+				case 0x3c3d:
+				case 0xefbb:
+				    code = "UTF-8";
+				    break;
+				case 0xfffe:
+				    code = "Unicode";
+				    break;
+				case 0xfeff:
+				    code = "UTF-16BE";
+				    break;
+				default:
+				    code = "GBK";
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return code;
+	}
+	
+	/**
+	 * 通过 BufferedInputStream 的文本
+	 * @param bis
+	 * @param coder
+	 * @return
+	 */
+	public static StringBuffer getText(BufferedInputStream bis,String coder){
+		StringBuffer stringBuffer = new StringBuffer();
+		
+		try {
+			List<String> readLines = IOUtils.readLines(bis, coder);
+			for (String line : readLines) {
+				//替换特殊字符
+				line = line.replace("\"", "&quot;");
+				line = line.replace("&", "&amp;");
+				line = line.replace("<", "&lt;");
+				line = line.replace(">", "&gt;");
+				stringBuffer.append(line+"<br/>");
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally{
+			if(bis != null){
+				try {
+					bis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return stringBuffer;
 	}
 	
 	/**
