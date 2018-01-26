@@ -34,7 +34,7 @@ public class ImageToHtml {
 		}
 		
 		String imageUrl = storePath.getURIResolverDirectory()+ "/" + fileName+ "." + suffix;
-		html.append("<br/>&nbsp;<img src="+imageUrl+" style='width:100%;height:100%'><br/><br/>");
+		html.append("<br/>&nbsp;<img src='"+imageUrl+"' style='width:100%;height:100%'><br/><br/>");
 		return html.toString();
 	}
 
