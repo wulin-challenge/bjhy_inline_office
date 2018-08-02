@@ -3,6 +3,5 @@
 /.project
 /.gitignore
 /logs/
-
-
-
+/.classpath
+/.settings
