@@ -1,4 +1,8 @@
+/.svn/
 /target/
-/.classpath
 /.project
-/.settings/
+/.gitignore
+/logs/
+
+
+
