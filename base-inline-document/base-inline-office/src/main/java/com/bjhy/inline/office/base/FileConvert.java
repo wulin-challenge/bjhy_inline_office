@@ -145,8 +145,7 @@ public class FileConvert {
 			office.setHtmlContext(officeStorePath.readHtmlContext());
 			office.setOfficeStorePath(officeStorePath);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
+			convertAposeWordToHtml(office);
 		}
 	}
 	
@@ -159,6 +158,21 @@ public class FileConvert {
 			
 			officeStorePath.setFileStream(fileInputSteam);
 			wordToHtml.docToHtml(officeStorePath);
+			office.setHtmlContext(officeStorePath.readHtmlContext());
+			office.setOfficeStorePath(officeStorePath);
+		} catch (Exception e) {
+			convertAposeWordToHtml(office);
+		}
+	}
+	
+	private void convertAposeWordToHtml(Office office){
+		try {
+			WordToHtml wordToHtml = new WordToHtml();
+			//重置流
+			fileInputSteam.reset();
+			
+			officeStorePath.setFileStream(fileInputSteam);
+			wordToHtml.asposeWordToHtml(officeStorePath);
 			office.setHtmlContext(officeStorePath.readHtmlContext());
 			office.setOfficeStorePath(officeStorePath);
 		} catch (Exception e) {

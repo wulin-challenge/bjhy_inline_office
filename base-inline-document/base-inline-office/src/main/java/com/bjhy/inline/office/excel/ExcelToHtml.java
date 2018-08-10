@@ -86,7 +86,7 @@ public class ExcelToHtml {
 			Row row = null; // 兼容
 			Cell cell = null; // 兼容
 			int maxcell = 0;
-			for (int i = 1; i < lastRowNum; i++) {
+			for (int i = 0; i < lastRowNum; i++) {
 				row = sheet.getRow(i);
 				if (row != null) {
 					if (maxcell < row.getLastCellNum()) {

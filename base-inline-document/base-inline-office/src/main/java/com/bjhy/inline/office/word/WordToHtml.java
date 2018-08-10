@@ -2,6 +2,7 @@ package com.bjhy.inline.office.word;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,6 +23,8 @@ import org.apache.poi.xwpf.converter.xhtml.XHTMLOptions;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.w3c.dom.Document;
 
+import com.aspose.words.HtmlSaveOptions;
+import com.aspose.words.License;
 import com.bjhy.inline.office.base.OfficeStorePath;
 
 /**
@@ -35,6 +38,7 @@ public class WordToHtml {
 	public void docToHtml(OfficeStorePath storePath) throws Exception { 
 		//得到Html文件路径
 		String htmlFilePath = storePath.getHtmlFilePath();
+//		int i = 1/0;
 		//得到图片目录
 		final String imageDirectory = storePath.getImagesDirectory();
 		//得到URIResolver目录
@@ -96,5 +100,46 @@ public class WordToHtml {
 				outputStreamWriter.close();
 			}
 		}
+	}
+	
+	/**
+	 * 利用  aspose转html
+	 * @param storePath
+	 */
+	public void asposeWordToHtml(OfficeStorePath storePath){
+		//得到Html文件路径
+		String htmlFilePath = storePath.getHtmlFilePath();
+//		//得到图片目录
+//		String imageDirectory = storePath.getImagesDirectory();
+//		//得到URIResolver目录
+//		String uriResolverDirectory = storePath.getURIResolverDirectory();
+		
+		loadLicense();//加载licence
+		
+		try {
+			com.aspose.words.Document doc = new com.aspose.words.Document(storePath.getFileStream());
+			HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+			saveOptions.setExportImagesAsBase64(true);
+			doc.save(htmlFilePath, saveOptions);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 加载licence
+	 * @return
+	 */
+	private boolean loadLicense(){
+		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("config/license.xml");
+		boolean result = false;
+		try {
+			License aposeLic = new License();
+			aposeLic.setLicense(is);
+			result = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

@@ -149,5 +149,12 @@
 			<artifactId>platform-commons</artifactId>
 			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+		  <groupId>com.aspose</groupId>
+		  <artifactId>aspose-words</artifactId>
+		  <version>16.1.0</version>
+		</dependency>
+		
 	</dependencies>
 </project>
